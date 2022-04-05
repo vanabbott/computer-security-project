@@ -3,8 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 import rsa
 
-schemeLabel = tk.Label
-message = ''
+
 
 class App(tk.Tk):
     def __init__(self):
@@ -35,7 +34,7 @@ class App(tk.Tk):
         self.selected_scheme = tk.StringVar()
         self.selected_scheme.trace("w", self.change_scheme_label)
         # create the menu button
-
+        self.schemeLabel = tk.Label()
         # select scheme widget
         self.create_menu_button()
 
@@ -65,29 +64,19 @@ class App(tk.Tk):
     # encrypt message and write it to new_cipher textbox
     def perform_message_encrypt(self, *args):
         self.new_cipher.delete("1.0",tk.END)
-        self.new_cipher.pack()
         self.new_cipher.insert("1.0", rsa.encrypt(self.message.get()))
-        self.new_cipher.pack()
         return
 
     # action when encryption button is pressed
-    # decrypt message and write it to orig_message textbox
+    # decrypt cipher and write it to orig_message textbox
     def perform_message_decrypt(self, *args):
 
         self.orig_message.delete("1.0",tk.END)
-        self.orig_message.pack()
+
         om = rsa.decrypt(self.cipher.get())
         print(om)
-        self.orig_message.insert("1.0", om)
-        self.orig_message.pack()
 
-        '''
-        c = self.cipher.get("1.0", tk.END)
-        om = rsa.decrypt(c)
-        print(om)
         self.orig_message.insert("1.0", om)
-        self.orig_message.pack()
-        '''
         return
 
 
