@@ -26,5 +26,5 @@ def decrypt(c):
     bi = int(b, 2)
     bn = bi.bit_length() * 7 // 8
     ba = bi.to_bytes(bn, "big")
-    return ba.decode()
+    return str(ba.decode())
 

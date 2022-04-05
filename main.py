@@ -1,27 +1,4 @@
 #!/usr/bin/env python3
-'''import rsa
-import tkinter as tk
-from tkinter import ttk
-
-message = "Hello world it is a mighty fine day out there"
-
-def main():
-    root = tk.Tk()
-    root.title('Computer Security Final Project')
-    root.geometry('600x400+50+50')
-
-    mb = ttk.Menubutton(root)
-    m = tk.Menu(mb, tearoff=False)
-    mb["menu"] = m
-    root.mainloop()
-    
-    c = rsa.encrypt(message)
-    m = rsa.decrypt(c)
-    print(m)
-    return
-if __name__=="__main__":
-    main()'''
-
 import tkinter as tk
 from tkinter import ttk
 import rsa
@@ -33,49 +10,59 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.geometry('1200x800')
+        self.geometry('1300x1000')
         self.title('Message Encryption and Decryption')
 
 
-        # message entry 
+        # message input entry 
         self.message = tk.StringVar()
         txtbx = ttk.Entry(self, textvariable=self.message)
-        txtbx.pack()
 
-        # cipher textbox
+        # cipher output textbox
         encrypted_message = ttk.Label(self, text="Encrypted Message:")
-        encrypted_message.pack()
-        self.new_cipher = tk.Text(self, height=15, width=100)
-        self.new_cipher.pack()
+        self.new_cipher = tk.Text(self, height=9, width=75)
         
-        # cipher entry
-        self.cipher = tk.Text(self, height=15, width=100 )
-        self.cipher.pack()
+        
+        # cipher input entry
+        self.cipher = tk.StringVar()
+        txtbxD = ttk.Entry(self, textvariable=self.cipher)
 
-        # decrypted message textbox
+        # decrypted message output textbox
         decrypted_message = ttk.Label(self, text="Decrypted Message:")
-        decrypted_message.pack()
-        self.orig_message = tk.Text(self, height=10, width = 100)
-        self.orig_message.pack()
-        # calculate button
-
-        self.create_calc_button()
-        self.create_calc_buttonD()
-
+        self.orig_message = tk.Text(self, height=12, width=75)
+        
         # Menubutton variable
         self.selected_scheme = tk.StringVar()
         self.selected_scheme.trace("w", self.change_scheme_label)
         # create the menu button
+
+        # select scheme widget
         self.create_menu_button()
+
+        # encryption widgets
+        txtbx.pack()
+        self.create_enc_button()
+        encrypted_message.pack()
+        self.new_cipher.pack()
+
+        # decryption widgets
+        txtbxD.pack()
+        self.create_dec_button()
+        decrypted_message.pack()
+        self.orig_message.pack()
     
-    def create_calc_button(self):
+    # encryption button
+    def create_enc_button(self):
         cb = ttk.Button(self, text='encrypt', command=self.perform_message_encrypt)
         cb.pack()
 
-    def create_calc_buttonD(self):
+    # decryption button
+    def create_dec_button(self):
         cb = ttk.Button(self, text='decrypt', command=self.perform_message_decrypt)
         cb.pack()
     
+    # action when encryption button is pressed
+    # encrypt message and write it to new_cipher textbox
     def perform_message_encrypt(self, *args):
         self.new_cipher.delete("1.0",tk.END)
         self.new_cipher.pack()
@@ -83,24 +70,39 @@ class App(tk.Tk):
         self.new_cipher.pack()
         return
 
+    # action when encryption button is pressed
+    # decrypt message and write it to orig_message textbox
     def perform_message_decrypt(self, *args):
-        self.orig_message.insert("1.0", rsa.decrypt(str(self.cipher.get("1.0", tk.END))))
+
+        self.orig_message.delete("1.0",tk.END)
         self.orig_message.pack()
+        om = rsa.decrypt(self.cipher.get())
+        print(om)
+        self.orig_message.insert("1.0", om)
+        self.orig_message.pack()
+
+        '''
+        c = self.cipher.get("1.0", tk.END)
+        om = rsa.decrypt(c)
+        print(om)
+        self.orig_message.insert("1.0", om)
+        self.orig_message.pack()
+        '''
         return
 
 
+    # change title when different scheme is selected
     def change_scheme_label(self, *args):
         self.title('Message Encryption and Decryption for the '+self.selected_scheme.get() + ' scheme')
 
+    # create drop down scheme selector menu
     def create_menu_button(self):
         """ create a menu button """
         # menu variable
         schemes = ('RSA', 'Vigenere', 'Triple DES', 'AES')
 
         # create the Menubutton
-        menu_button = ttk.Menubutton(
-            self,
-            text='Select a scheme')
+        menu_button = ttk.Menubutton(self, text='Select a scheme')
 
         # create a new menu instance
         menu = tk.Menu(menu_button, tearoff=0)
