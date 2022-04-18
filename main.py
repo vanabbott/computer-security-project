@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 import rsa
+import vigenere
 
 
 
@@ -14,17 +15,28 @@ class App(tk.Tk):
 
 
         # message input entry 
+        message_input = ttk.Label(self, text="Input Message to Encrypt")
         self.message = tk.StringVar()
         txtbx = ttk.Entry(self, textvariable=self.message)
+
+        # encryption key input entry
+        encryption_key_input = ttk.Label(self, text="Input Key to Encrypt Message with")
+        self.encryptKey = tk.StringVar()
+        txtbxEK = ttk.Entry(self, textvariable=self.encryptKey)
 
         # cipher output textbox
         encrypted_message = ttk.Label(self, text="Encrypted Message:")
         self.new_cipher = tk.Text(self, height=9, width=75)
         
-        
         # cipher input entry
+        cipher_input = ttk.Label(self, text="Input Cipher to Decrypt")
         self.cipher = tk.StringVar()
         txtbxD = ttk.Entry(self, textvariable=self.cipher)
+
+        # decryption key input entry
+        decryption_key_input = ttk.Label(self, text="Input Key to Decrypt Cipher with")
+        self.decryptKey = tk.StringVar()
+        txtbxDK = ttk.Entry(self, textvariable=self.decryptKey)
 
         # decrypted message output textbox
         decrypted_message = ttk.Label(self, text="Decrypted Message:")
@@ -39,13 +51,19 @@ class App(tk.Tk):
         self.create_menu_button()
 
         # encryption widgets
+        message_input.pack()
         txtbx.pack()
+        encryption_key_input.pack()
+        txtbxEK.pack()
         self.create_enc_button()
         encrypted_message.pack()
         self.new_cipher.pack()
 
         # decryption widgets
+        cipher_input.pack()
         txtbxD.pack()
+        decryption_key_input.pack()
+        txtbxDK.pack()
         self.create_dec_button()
         decrypted_message.pack()
         self.orig_message.pack()
@@ -64,19 +82,62 @@ class App(tk.Tk):
     # encrypt message and write it to new_cipher textbox
     def perform_message_encrypt(self, *args):
         self.new_cipher.delete("1.0",tk.END)
-        self.new_cipher.insert("1.0", rsa.encrypt(self.message.get()))
+        
+        # check which encryption scheme was selected and decrypt accordingly
+        if self.selected_scheme.get() == "RSA":
+            c = rsa.encrypt(self.message.get())
+        elif self.selected_scheme.get() == "Vigenere":
+            c = vigenere.encrypt(self.message.get(), self.encryptKey.get())
+        elif self.selected_scheme.get() == "Triple DES":
+            # IMPLEMENT DES ENCRYPTION HERE ON self.message.get() USING self.encryptKey.get()
+            #
+            # NOT DONE
+            #
+            c = "NOTE YET DEVELOPED"
+
+        elif self.selected_scheme.get() == "AES":
+            # IMPLEMENT AES ENCRYPTION HERE ON self.message.get() USING self.encryptKey.get()
+            #
+            # NOT DONE
+            #
+            c = "NOT YET DEVELOPED"
+        else:
+            c = "Please select a security scheme"
+        
+    
+        self.new_cipher.insert("1.0", c)
+        
         return
 
     # action when encryption button is pressed
     # decrypt cipher and write it to orig_message textbox
     def perform_message_decrypt(self, *args):
-
+        # delete any leftover data in decrypted message box
         self.orig_message.delete("1.0",tk.END)
+        
+        # check which decryption scheme was selected and decrypt accordingly
 
-        om = rsa.decrypt(self.cipher.get())
+        if self.selected_scheme.get() == "RSA":
+            om = rsa.decrypt(self.cipher.get())
+        elif self.selected_scheme.get() == "Vigenere":
+            om = vigenere.decrypt(self.cipher.get(), self.decryptKey.get())
+        elif self.selected_scheme.get() == "Triple DES":
+            # IMPLEMENT DES DECRYPTION HERE ON self.cipher.get() USING self.decryptKey.get()
+            #
+            # NOT DONE
+            #
+            om = "NOTE YET DEVELOPED"
+        elif self.selected_scheme.get() == "AES":
+            # IMPLEMENT AES DECRYPTION HERE ON self.cipher.get() USING self.decryptKey.get()
+            #
+            # NOT DONE
+            #
+            om = "NOT YET DEVELOPED"
+        else:
+            om = "Please select a security scheme"
         print(om)
 
-        self.orig_message.insert("1.0", om)
+        self.orig_message.insert('end', om)
         return
 
 
