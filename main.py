@@ -83,7 +83,7 @@ class App(tk.Tk):
     def perform_message_encrypt(self, *args):
         self.new_cipher.delete("1.0",tk.END)
         
-        # check which encryption scheme was selected and decrypt accordingly
+        # check which encryption scheme was selected and encrypt accordingly
         if self.selected_scheme.get() == "RSA":
             c = rsa.encrypt(self.message.get())
         elif self.selected_scheme.get() == "Vigenere":
@@ -93,7 +93,7 @@ class App(tk.Tk):
             #
             # NOT DONE
             #
-            c = "NOTE YET DEVELOPED"
+            c = "NOT YET DEVELOPED"
 
         elif self.selected_scheme.get() == "AES":
             # IMPLEMENT AES ENCRYPTION HERE ON self.message.get() USING self.encryptKey.get()
@@ -126,7 +126,7 @@ class App(tk.Tk):
             #
             # NOT DONE
             #
-            om = "NOTE YET DEVELOPED"
+            om = "NOT YET DEVELOPED"
         elif self.selected_scheme.get() == "AES":
             # IMPLEMENT AES DECRYPTION HERE ON self.cipher.get() USING self.decryptKey.get()
             #

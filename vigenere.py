@@ -34,8 +34,10 @@ def find_index(let):
         i += 1
 
 def encrypt(message, key):
+    message = message.replace(" ", "")
+    key = key.replace(" ", "")
     period = len(key)
-    alphs = list()
+    alphs = []
     count = 0
     key = key.upper()
     message = message.upper()
@@ -54,14 +56,17 @@ def encrypt(message, key):
 
     for i in range(len(alphs[0])):
         for j in range(period):
-            cipher += alphs[j][i]
+            if i < len(alphs[j]) and j < len(alphs):
+                cipher += alphs[j][i]
 
     return cipher
 
 
 def decrypt(cipher, key):
+    cipher = cipher.replace(" ", "")
+    key = key.replace(" ", "")
     period = len(key)
-    alphs = list()
+    alphs = []
     count = 0
     key = key.upper()
     cipher = cipher.upper()
@@ -80,9 +85,8 @@ def decrypt(cipher, key):
 
     for i in range(len(alphs[0])):
         for j in range(period):
-            message += alphs[j][i]
+            if i < len(alphs[j]) and j < len(alphs):
+                message += alphs[j][i]
 
     return message
 
-test = encrypt("amaze", "THEVIGENERECIPHERISAMETHODOFENCRYPTINGALPHABETICTEXTBYUSINGASERIESOFINTERWOVENCAESARCIPHERSBASEDONTHELETTERSOFAKEYWORDITEMPLOYSAFORMOFPOLYALPHABETICSUBSTITUTION")
-#print(decrypt("amaze", test))
