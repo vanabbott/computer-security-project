@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import PhotoImage, ttk
 import rsa
 import vigenere
+import des
 
 
 
@@ -110,12 +111,10 @@ class App(tk.Tk):
         elif self.selected_scheme.get() == "Vigenere":
             c = vigenere.encrypt(self.message.get(), self.encryptKey.get())
         elif self.selected_scheme.get() == "Triple DES":
-            # IMPLEMENT DES ENCRYPTION HERE ON self.message.get() USING self.encryptKey.get()
-            #
-            # NOT DONE
-            #
-            c = "NOT YET DEVELOPED"
-
+            if self.encryptKey.get():
+                c = des.iter_te(self.message.get(), self.encryptKey.get())
+            else:
+                c = des.iter_te(self.message.get())
         elif self.selected_scheme.get() == "AES":
             # IMPLEMENT AES ENCRYPTION HERE ON self.message.get() USING self.encryptKey.get()
             #
@@ -146,11 +145,10 @@ class App(tk.Tk):
         elif self.selected_scheme.get() == "Vigenere":
             om = vigenere.decrypt(self.cipher.get(), self.decryptKey.get())
         elif self.selected_scheme.get() == "Triple DES":
-            # IMPLEMENT DES DECRYPTION HERE ON self.cipher.get() USING self.decryptKey.get()
-            #
-            # NOT DONE
-            #
-            om = "NOT YET DEVELOPED"
+            if self.decryptKey.get():
+                om = des.iter_td(self.cipher.get(), self.decryptKey.get())
+            else:
+                om = des.iter_td(self.cipher.get())
         elif self.selected_scheme.get() == "AES":
             # IMPLEMENT AES DECRYPTION HERE ON self.cipher.get() USING self.decryptKey.get()
             #
@@ -159,8 +157,9 @@ class App(tk.Tk):
             om = "NOT YET DEVELOPED"
         else:
             om = "Please select a security scheme"
-
-        self.orig_message.insert('end', om)
+        print(om)
+        t = om
+        self.orig_message.insert('1.0', t)
         return
 
 
