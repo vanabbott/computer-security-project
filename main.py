@@ -85,7 +85,10 @@ class App(tk.Tk):
         
         # check which encryption scheme was selected and encrypt accordingly
         if self.selected_scheme.get() == "RSA":
-            c = rsa.encrypt(self.message.get())
+            if self.encryptKey.get():
+                c = rsa.encrypt(self.message.get(), self.encryptKey.get())
+            else:
+                c = rsa.encrypt(self.message.get())
         elif self.selected_scheme.get() == "Vigenere":
             c = vigenere.encrypt(self.message.get(), self.encryptKey.get())
         elif self.selected_scheme.get() == "Triple DES":
@@ -118,7 +121,10 @@ class App(tk.Tk):
         # check which decryption scheme was selected and decrypt accordingly
 
         if self.selected_scheme.get() == "RSA":
-            om = rsa.decrypt(self.cipher.get())
+            if self.decryptKey.get():
+                om = rsa.decrypt(self.cipher.get(), self.decryptKey.get())
+            else:
+                om = rsa.decrypt(self.cipher.get())
         elif self.selected_scheme.get() == "Vigenere":
             om = vigenere.decrypt(self.cipher.get(), self.decryptKey.get())
         elif self.selected_scheme.get() == "Triple DES":
@@ -135,7 +141,6 @@ class App(tk.Tk):
             om = "NOT YET DEVELOPED"
         else:
             om = "Please select a security scheme"
-        print(om)
 
         self.orig_message.insert('end', om)
         return
