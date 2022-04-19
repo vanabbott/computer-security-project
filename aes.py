@@ -48,7 +48,6 @@ def encrypt(message, cipher_key):
     elif len(cipher_key) == 32:
         rounds = 14
     
-    
 
 def decrypt(cyphertext, cipher_key):
     pass
