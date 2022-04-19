@@ -68,33 +68,33 @@ class App(tk.Tk):
 
         #self.backGroundImageLabel.pack()
         # encryption widgets
-        message_input.grid(column=0, row=1, sticky=tk.E)
-        txtbx.grid(column=0, row=2, sticky=tk.E)
-        encryption_key_input.grid(column=0, row=3, sticky=tk.E)
-        txtbxEK.grid(column=0, row=4, sticky=tk.E)
+        message_input.grid(column=0, row=1, sticky=tk.S)
+        txtbx.grid(column=0, row=2, sticky=tk.N)
+        encryption_key_input.grid(column=0, row=3, sticky=tk.S)
+        txtbxEK.grid(column=0, row=4, sticky=tk.N)
         self.create_enc_button()
-        encrypted_message.grid(column=0, row=6, sticky=tk.E)
-        self.new_cipher.grid(column=0, row=7, sticky=tk.E)
+        encrypted_message.grid(column=0, row=6, sticky=tk.S)
+        self.new_cipher.grid(column=0, row=7, sticky=tk.N)
 
         # decryption widgets
-        cipher_input.grid(column=2, row=1, sticky=tk.W)
-        txtbxD.grid(column=2, row=2, sticky=tk.W)
-        decryption_key_input.grid(column=2, row=3, sticky=tk.W)
-        txtbxDK.grid(column=2, row=4, sticky=tk.W)
+        cipher_input.grid(column=2, row=1, sticky=tk.S)
+        txtbxD.grid(column=2, row=2, sticky=tk.N)
+        decryption_key_input.grid(column=2, row=3, sticky=tk.S)
+        txtbxDK.grid(column=2, row=4, sticky=tk.N)
         self.create_dec_button()
-        decrypted_message.grid(column=2, row=6, sticky=tk.W)
-        self.orig_message.grid(column=2, row=7, sticky=tk.W)
+        decrypted_message.grid(column=2, row=6, sticky=tk.S)
+        self.orig_message.grid(column=2, row=7, sticky=tk.N)
     
     # encryption button
     def create_enc_button(self):
-        self.enc_but = PhotoImage(file="images/encrypt_button.png")
+        #self.enc_but = PhotoImage(file="images/encrypt_button.png", height=40, width=40)
         cb = ttk.Button(self, text='encrypt', command=self.perform_message_encrypt)
-        cb.grid(column=0, row=5, sticky=tk.E)
+        cb.grid(column=0, row=5)
 
     # decryption button
     def create_dec_button(self):
         cb = ttk.Button(self, text='decrypt', command=self.perform_message_decrypt)
-        cb.grid(column=2, row=5, sticky=tk.W)
+        cb.grid(column=2, row=5)
     
     # action when encryption button is pressed
     # encrypt message and write it to new_cipher textbox
