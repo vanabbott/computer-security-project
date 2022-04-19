@@ -35,6 +35,7 @@ def inv_add_round_key(state_array, round_key):
 def aes_round(state_array, round_key):
     pass
 
+
 def aes_final_round(state_array, round_key):
     pass
 
