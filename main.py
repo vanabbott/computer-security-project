@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import tkinter as tk
-from tkinter import ttk
+from tkinter import PhotoImage, ttk
 import rsa
 import vigenere
 
@@ -10,9 +10,23 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.geometry('1300x1000')
+        self.geometry('1100x800')
         self.title('Message Encryption and Decryption')
+        self.resizable(False,False)
+        self.backGroundImage = PhotoImage(file="images/security_background.png")
+        self.backGroundImageLabel = tk.Label(self, image=self.backGroundImage)
 
+        self.columnconfigure(0, weight=2)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=2)
+        self.rowconfigure(0,weight=1)
+        self.rowconfigure(1,weight=1)
+        self.rowconfigure(2,weight=2)
+        self.rowconfigure(3,weight=1)
+        self.rowconfigure(4,weight=2)
+        self.rowconfigure(5,weight=1)
+        self.rowconfigure(6,weight=1)
+        self.rowconfigure(7,weight=5)
 
         # message input entry 
         message_input = ttk.Label(self, text="Input Message to Encrypt")
@@ -26,7 +40,7 @@ class App(tk.Tk):
 
         # cipher output textbox
         encrypted_message = ttk.Label(self, text="Encrypted Message:")
-        self.new_cipher = tk.Text(self, height=9, width=75)
+        self.new_cipher = tk.Text(self, height=9, width=65)
         
         # cipher input entry
         cipher_input = ttk.Label(self, text="Input Cipher to Decrypt")
@@ -40,7 +54,7 @@ class App(tk.Tk):
 
         # decrypted message output textbox
         decrypted_message = ttk.Label(self, text="Decrypted Message:")
-        self.orig_message = tk.Text(self, height=12, width=75)
+        self.orig_message = tk.Text(self, height=9, width=65)
         
         # Menubutton variable
         self.selected_scheme = tk.StringVar()
@@ -48,35 +62,39 @@ class App(tk.Tk):
         # create the menu button
         self.schemeLabel = tk.Label()
         # select scheme widget
+        self.backGroundImageLabel.place(x=0, y=0)
         self.create_menu_button()
 
+
+        #self.backGroundImageLabel.pack()
         # encryption widgets
-        message_input.pack()
-        txtbx.pack()
-        encryption_key_input.pack()
-        txtbxEK.pack()
+        message_input.grid(column=0, row=1, sticky=tk.E)
+        txtbx.grid(column=0, row=2, sticky=tk.E)
+        encryption_key_input.grid(column=0, row=3, sticky=tk.E)
+        txtbxEK.grid(column=0, row=4, sticky=tk.E)
         self.create_enc_button()
-        encrypted_message.pack()
-        self.new_cipher.pack()
+        encrypted_message.grid(column=0, row=6, sticky=tk.E)
+        self.new_cipher.grid(column=0, row=7, sticky=tk.E)
 
         # decryption widgets
-        cipher_input.pack()
-        txtbxD.pack()
-        decryption_key_input.pack()
-        txtbxDK.pack()
+        cipher_input.grid(column=2, row=1, sticky=tk.W)
+        txtbxD.grid(column=2, row=2, sticky=tk.W)
+        decryption_key_input.grid(column=2, row=3, sticky=tk.W)
+        txtbxDK.grid(column=2, row=4, sticky=tk.W)
         self.create_dec_button()
-        decrypted_message.pack()
-        self.orig_message.pack()
+        decrypted_message.grid(column=2, row=6, sticky=tk.W)
+        self.orig_message.grid(column=2, row=7, sticky=tk.W)
     
     # encryption button
     def create_enc_button(self):
+        self.enc_but = PhotoImage(file="images/encrypt_button.png")
         cb = ttk.Button(self, text='encrypt', command=self.perform_message_encrypt)
-        cb.pack()
+        cb.grid(column=0, row=5, sticky=tk.E)
 
     # decryption button
     def create_dec_button(self):
         cb = ttk.Button(self, text='decrypt', command=self.perform_message_decrypt)
-        cb.pack()
+        cb.grid(column=2, row=5, sticky=tk.W)
     
     # action when encryption button is pressed
     # encrypt message and write it to new_cipher textbox
@@ -171,7 +189,7 @@ class App(tk.Tk):
         # associate menu with the Menubutton
         menu_button["menu"] = menu
 
-        menu_button.pack(expand=True)
+        menu_button.grid(column=1,row=0)
 
 def main():
     return
