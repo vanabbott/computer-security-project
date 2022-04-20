@@ -59,6 +59,7 @@ class App(tk.Tk):
         
         # Menubutton variable
         self.selected_scheme = tk.StringVar()
+        self.selected_scheme.set('Select a scheme')
         self.selected_scheme.trace("w", self.change_scheme_label)
         # create the menu button
         self.schemeLabel = tk.Label()
@@ -109,7 +110,10 @@ class App(tk.Tk):
             else:
                 c = rsa.encrypt(self.message.get())
         elif self.selected_scheme.get() == "Vigenere":
-            c = vigenere.encrypt(self.message.get(), self.encryptKey.get())
+            if self.encryptKey.get():
+                c = vigenere.encrypt(self.message.get(), self.encryptKey.get())
+            else:
+                c = "must enter key"
         elif self.selected_scheme.get() == "Triple DES":
             if self.encryptKey.get():
                 c = des.iter_te(self.message.get(), self.encryptKey.get())
@@ -143,7 +147,10 @@ class App(tk.Tk):
             else:
                 om = rsa.decrypt(self.cipher.get())
         elif self.selected_scheme.get() == "Vigenere":
-            om = vigenere.decrypt(self.cipher.get(), self.decryptKey.get())
+            if self.decryptKey.get():
+                om = vigenere.decrypt(self.cipher.get(), self.decryptKey.get())
+            else:
+                om = "must enter key"
         elif self.selected_scheme.get() == "Triple DES":
             if self.decryptKey.get():
                 om = des.iter_td(self.cipher.get(), self.decryptKey.get())
@@ -172,12 +179,11 @@ class App(tk.Tk):
         """ create a menu button """
         # menu variable
         schemes = ('RSA', 'Vigenere', 'Triple DES', 'AES')
-
         # create the Menubutton
-        menu_button = ttk.Menubutton(self, text='Select a scheme')
+        self.menu_button = ttk.Menubutton(self, textvariable=self.selected_scheme)
 
         # create a new menu instance
-        menu = tk.Menu(menu_button, tearoff=0)
+        menu = tk.Menu(self.menu_button, tearoff=0)
 
         for scheme in schemes:
             menu.add_radiobutton(
@@ -186,9 +192,9 @@ class App(tk.Tk):
                 variable=self.selected_scheme)
 
         # associate menu with the Menubutton
-        menu_button["menu"] = menu
+        self.menu_button["menu"] = menu
 
-        menu_button.grid(column=1,row=0)
+        self.menu_button.grid(column=1,row=0)
 
 def main():
     return
