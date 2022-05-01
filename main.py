@@ -4,6 +4,8 @@ from tkinter import PhotoImage, ttk
 import rsa
 import vigenere
 import des
+import aes
+import binascii
 
 
 
@@ -119,12 +121,17 @@ class App(tk.Tk):
                 c = des.iter_te(self.message.get(), self.encryptKey.get())
             else:
                 c = des.iter_te(self.message.get())
+            
         elif self.selected_scheme.get() == "AES":
             # IMPLEMENT AES ENCRYPTION HERE ON self.message.get() USING self.encryptKey.get()
             #
             # NOT DONE
             #
-            c = "NOT YET DEVELOPED"
+            if self.encryptKey.get():
+                c = aes.encrypt(self.message.get(), self.encryptKey.get())
+            else:
+                c = aes.encrypt(self.message.get(), '')
+            
         else:
             c = "Please select a security scheme"
         
@@ -156,17 +163,26 @@ class App(tk.Tk):
                 om = des.iter_td(self.cipher.get(), self.decryptKey.get())
             else:
                 om = des.iter_td(self.cipher.get())
+            
         elif self.selected_scheme.get() == "AES":
             # IMPLEMENT AES DECRYPTION HERE ON self.cipher.get() USING self.decryptKey.get()
             #
             # NOT DONE
             #
-            om = "NOT YET DEVELOPED"
+            if self.decryptKey.get():
+                om = aes.decrypt(self.cipher.get(), self.decryptKey.get())
+            else:
+                t = aes.decrypt(self.cipher.get(), '')
+                #b = bytes(t, encoding='utf8')
+                '''binary_int = int(t, 2)
+                byte_number = binary_int.bit_length() + 7 // 8
+                binary_array = binary_int.to_bytes(byte_number, "big")'''
+                om = t
+
         else:
             om = "Please select a security scheme"
         print(om)
-        t = om
-        self.orig_message.insert('1.0', t)
+        self.orig_message.insert('1.0', om)
         return
 
 

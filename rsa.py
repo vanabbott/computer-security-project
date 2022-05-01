@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import binascii
 import codecs
-from math import gcd
 import gmpy2 as gmp
 from gmpy2 import mpz
 
@@ -50,8 +49,9 @@ def decrypt(c, key=str(d)+","+str(n)):
     nn = mpz(nn.strip())
     c = c.strip()
     m = gmp.powmod(mpz(c), dd, nn)
+    print(m)
     b = gmp.to_binary(m)
-
+    print(b)
     b = bytes(reversed(b))
     return str(b.decode())
 

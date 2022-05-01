@@ -221,7 +221,7 @@ def triple_decrypt(c, key):
     m1 = decrypt(c, three_keys[2])
     c2 = encrypt(m1, three_keys[1])
     m2 = decrypt(c2, three_keys[0])
-    return bin_asc(m2)
+    return bin2asc(m2)
 
 def split_bits(b):
     bit_array = list()
@@ -240,6 +240,16 @@ def pad_str(s):
             sn += '|'
     return sn
 
+def bin2asc(b):
+    s = ''
+    n = len(b)//8
+    print(b)
+    for i in range(n):
+        print(b[i*8:i*8+8])
+        print(int(b[i*8:i*8+8],2))
+        s += chr(int(b[i*8:i*8+8],2))
+    return s
+
 def iter_te(m, key=key3):
     cba = list()
     m = pad_str(m)
@@ -255,4 +265,4 @@ def iter_td(c, key=key3):
     cba = split_bits(c)
     for b in cba:
         mba.append(triple_decrypt(b,key))
-    return str(''.join(mba))
+    return ''.join(mba)
