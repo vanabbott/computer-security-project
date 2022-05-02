@@ -37,7 +37,9 @@ class App(tk.Tk):
         txtbx = ttk.Entry(self, textvariable=self.message)
 
         # encryption key input entry
-        encryption_key_input = ttk.Label(self, text="Input Key to Encrypt Message with")
+        self.encrypt_message = tk.StringVar()
+        self.encrypt_message.set("Input Key to Encrypt Message with")
+        encryption_key_input = ttk.Label(self, textvariable=self.encrypt_message)
         self.encryptKey = tk.StringVar()
         txtbxEK = ttk.Entry(self, textvariable=self.encryptKey)
 
@@ -51,7 +53,9 @@ class App(tk.Tk):
         txtbxD = ttk.Entry(self, textvariable=self.cipher)
 
         # decryption key input entry
-        decryption_key_input = ttk.Label(self, text="Input Key to Decrypt Cipher with")
+        self.decrypt_message = tk.StringVar()
+        self.decrypt_message.set("Input Key to Decrypt Cipher with")
+        decryption_key_input = ttk.Label(self, textvariable=self.decrypt_message)
         self.decryptKey = tk.StringVar()
         txtbxDK = ttk.Entry(self, textvariable=self.decryptKey)
 
@@ -123,10 +127,6 @@ class App(tk.Tk):
                 c = des.iter_te(self.message.get())
             
         elif self.selected_scheme.get() == "AES":
-            # IMPLEMENT AES ENCRYPTION HERE ON self.message.get() USING self.encryptKey.get()
-            #
-            # NOT DONE
-            #
             if self.encryptKey.get():
                 c = aes.encrypt(self.message.get(), self.encryptKey.get())
             else:
@@ -165,10 +165,6 @@ class App(tk.Tk):
                 om = des.iter_td(self.cipher.get())
             
         elif self.selected_scheme.get() == "AES":
-            # IMPLEMENT AES DECRYPTION HERE ON self.cipher.get() USING self.decryptKey.get()
-            #
-            # NOT DONE
-            #
             if self.decryptKey.get():
                 om = aes.decrypt(self.cipher.get(), self.decryptKey.get())
             else:
@@ -189,6 +185,19 @@ class App(tk.Tk):
     # change title when different scheme is selected
     def change_scheme_label(self, *args):
         self.title('Message Encryption and Decryption for the '+self.selected_scheme.get() + ' scheme')
+        if self.selected_scheme.get() == 'RSA':
+            self.encrypt_message.set("Input Key to Encrypt Message with e,n")
+            self.decrypt_message.set("Input Key to Decrypt Message with d,n")
+        elif self.selected_scheme.get() == 'Triple DES':
+            self.encrypt_message.set("Input Key to Encrypt Message in form k1,k2,k3\neach being 64 bit binary")
+            self.decrypt_message.set("Input Key to Decrypt Message in form k1,k2,k3\neach being 64 bit binary")
+        elif self.selected_scheme.get() == 'AES':
+            self.encrypt_message.set("Input Key to Encrypt Message with")
+            self.decrypt_message.set("Input Key to Decrypt Message with")
+        elif self.selected_scheme.get() == 'Vigenere':
+            self.encrypt_message.set("Input Key to Encrypt Message with alphabetic characters")
+            self.decrypt_message.set("Input Key to Decrypt Message with alphabetic characters")
+        
 
     # create drop down scheme selector menu
     def create_menu_button(self):
@@ -200,7 +209,7 @@ class App(tk.Tk):
 
         # create a new menu instance
         menu = tk.Menu(self.menu_button, tearoff=0)
-
+ 
         for scheme in schemes:
             menu.add_radiobutton(
                 label=scheme,
